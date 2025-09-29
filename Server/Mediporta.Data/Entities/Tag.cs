@@ -19,6 +19,8 @@ public class Tag
 
     public bool IsRequired { get; set; }
 
+    public double PercentageOfAll { get; set; }
+
     // Many Tags to Many Collectives
     public ICollection<TagCollective> TagCollectives { get; set; }
 }

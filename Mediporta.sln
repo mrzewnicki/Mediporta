@@ -8,6 +8,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediporta.ConsoleTest", "Se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediporta.Data", "Server\Mediporta.Data\Mediporta.Data.csproj", "{5DB2140C-A4C7-4BC6-813A-5195E6CE3DEE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediporta.Api", "Server\Mediporta.Api\Mediporta.Api.csproj", "{886DAC9E-A9FD-4612-8A96-BB1A17DFC1E1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{404D4429-B033-4598-8D22-A552BB1A3E1E}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediporta.Core", "Server\Mediporta.Core\Mediporta.Core.csproj", "{13DE6E2A-6739-4383-A051-12A415358B51}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{3924BBB9-D6B6-4C99-B5D1-68306A9383B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediporta.Shared", "Mediporta.Shared\Mediporta.Shared.csproj", "{7B8DAC30-3B1A-436C-8291-78AD204EAC53}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +30,9 @@ Global
 		{CE48478F-D4F1-4523-89A0-0F7D3B9BAF85} = {F3A3C9DA-6C9E-41C0-87AB-70CBDFA4793B}
 		{9B3DB935-EC34-4E8D-A14D-BA040EA2A799} = {F3A3C9DA-6C9E-41C0-87AB-70CBDFA4793B}
 		{5DB2140C-A4C7-4BC6-813A-5195E6CE3DEE} = {F3A3C9DA-6C9E-41C0-87AB-70CBDFA4793B}
+		{886DAC9E-A9FD-4612-8A96-BB1A17DFC1E1} = {F3A3C9DA-6C9E-41C0-87AB-70CBDFA4793B}
+		{13DE6E2A-6739-4383-A051-12A415358B51} = {F3A3C9DA-6C9E-41C0-87AB-70CBDFA4793B}
+		{7B8DAC30-3B1A-436C-8291-78AD204EAC53} = {3924BBB9-D6B6-4C99-B5D1-68306A9383B9}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{CE48478F-D4F1-4523-89A0-0F7D3B9BAF85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -31,5 +47,17 @@ Global
 		{5DB2140C-A4C7-4BC6-813A-5195E6CE3DEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DB2140C-A4C7-4BC6-813A-5195E6CE3DEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DB2140C-A4C7-4BC6-813A-5195E6CE3DEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{886DAC9E-A9FD-4612-8A96-BB1A17DFC1E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{886DAC9E-A9FD-4612-8A96-BB1A17DFC1E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{886DAC9E-A9FD-4612-8A96-BB1A17DFC1E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{886DAC9E-A9FD-4612-8A96-BB1A17DFC1E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13DE6E2A-6739-4383-A051-12A415358B51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13DE6E2A-6739-4383-A051-12A415358B51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13DE6E2A-6739-4383-A051-12A415358B51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13DE6E2A-6739-4383-A051-12A415358B51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B8DAC30-3B1A-436C-8291-78AD204EAC53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B8DAC30-3B1A-436C-8291-78AD204EAC53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B8DAC30-3B1A-436C-8291-78AD204EAC53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B8DAC30-3B1A-436C-8291-78AD204EAC53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

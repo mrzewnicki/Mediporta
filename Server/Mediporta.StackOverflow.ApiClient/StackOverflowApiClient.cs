@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace Mediporta.StackOverflow.ApiClient;
 
-public class StackOverflowApiClient
+public class StackOverflowApiClient:IStackOverflowApiClient
 {
     private readonly HttpClient _httpClient;
     private readonly StackOverflowApiClientConfiguration _configuration;
@@ -55,7 +55,6 @@ public class StackOverflowApiClient
             hasMore = tagResponse?.HasMore ?? false;
             currentPage++;
         }
-
         return tags.Count > request.ItemsCountToFetch
             ? tags.GetRange(0, request.ItemsCountToFetch)
             : tags;

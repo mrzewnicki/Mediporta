@@ -1,12 +1,13 @@
 ﻿using System.Diagnostics;
 using Mediporta.Data.Entities;
+using Mediporta.Data.Repositories.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mediporta.Data.Repositories;
 
 public interface ITagsRepository
 {
-    Task<IEnumerable<Tag>> GetAllAsync(CancellationToken cancellationToken);
+    IEnumerable<Tag> GetAll(IEnumerable<OrderByQuery> orderByQueries = null, int skip = 0, int take = 100);
     Task<Tag?> GetByIdAsync(int id, CancellationToken cancellationToken);
     Task AddRangeAsync(IEnumerable<Tag> tags);
     bool Remove(Tag tag);
@@ -21,9 +22,30 @@ public class TagsRepository:ITagsRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Tag>> GetAllAsync(CancellationToken cancellationToken)
+    public IEnumerable<Tag> GetAll(IEnumerable<OrderByQuery> orderByQueries = null, int skip = 0, int take = 100)
     {
-        return await _context.Tags.ToListAsync(cancellationToken);
+        if(orderByQueries is null || !orderByQueries.Any())
+            orderByQueries = new List<OrderByQuery> { new(t => t.Name) };
+
+        var firstOrderQuery = orderByQueries.First();
+
+        var query = firstOrderQuery.IsAscending
+            ? _context.Tags.OrderBy(firstOrderQuery.KeySelector)
+            : _context.Tags.OrderByDescending(firstOrderQuery.KeySelector);
+
+        if (orderByQueries.Count() > 1)
+        {
+            foreach (var orderByQuery in orderByQueries.Skip(1))
+            {
+                query = orderByQuery.IsAscending
+                    ? query.ThenBy(orderByQuery.KeySelector)
+                    : query.ThenByDescending(orderByQuery.KeySelector);
+            }
+        }
+
+        return query.Skip(skip)
+            .Take(take)
+            .AsEnumerable();
     }
 
     public async Task<Tag?> GetByIdAsync(int id, CancellationToken cancellationToken)
