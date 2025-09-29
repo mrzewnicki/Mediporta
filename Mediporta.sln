@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{F3A3C9DA-6C9E-41C0-87AB-70CBDFA4793B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediporta.StackOverflow.ApiClient", "Server\Mediporta.StackOverflow.ApiClient\Mediporta.StackOverflow.ApiClient.csproj", "{CE48478F-D4F1-4523-89A0-0F7D3B9BAF85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediporta.ConsoleTest", "Server\Mediporta.ConsoleTest\Mediporta.ConsoleTest.csproj", "{9B3DB935-EC34-4E8D-A14D-BA040EA2A799}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CE48478F-D4F1-4523-89A0-0F7D3B9BAF85} = {F3A3C9DA-6C9E-41C0-87AB-70CBDFA4793B}
+		{9B3DB935-EC34-4E8D-A14D-BA040EA2A799} = {F3A3C9DA-6C9E-41C0-87AB-70CBDFA4793B}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CE48478F-D4F1-4523-89A0-0F7D3B9BAF85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE48478F-D4F1-4523-89A0-0F7D3B9BAF85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE48478F-D4F1-4523-89A0-0F7D3B9BAF85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE48478F-D4F1-4523-89A0-0F7D3B9BAF85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B3DB935-EC34-4E8D-A14D-BA040EA2A799}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B3DB935-EC34-4E8D-A14D-BA040EA2A799}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B3DB935-EC34-4E8D-A14D-BA040EA2A799}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B3DB935-EC34-4E8D-A14D-BA040EA2A799}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
