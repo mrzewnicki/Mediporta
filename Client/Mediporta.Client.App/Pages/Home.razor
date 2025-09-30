@@ -1,20 +1,68 @@
-﻿@using Mediporta.Client.App.Components
+﻿@using System.Diagnostics
+@using Mediporta.Client.App.Components
+@using Mediporta.Client.App.Config
 @using Mediporta.Client.App.Services
 @using MudBlazor
 @inject ITagsService TagsService
+@inject ISnackbar Snackbar
+@inject NavigationManager NavigationManager
+@inject IHttpClientFactory HttpClientFactory
 @page "/"
 
 <PageTitle>Strona Główna</PageTitle>
 
-<div style="width: 80%" class="fade-in">
-    <MudCard class="mt-5">
+<div class="fade-in w-75">
+    <MudCard Class="mt-5">
         <MudCardContent>
-            <TagsTable @ref="@_tagsTable" />
+            <div class="d-flex justify-content-between w-100 mb-1">
+                <MudButton @ref="_refreshButton" Color="Color.Success" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Download" OnClick="GoToManifest">
+                    Pobierz manifest.json
+                </MudButton>
+                <MudButton @ref="_refreshButton" Color="Color.Primary" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Refresh" OnClick="RefreshData">
+                    Wyczyść dane i pobierz ponownie
+                </MudButton>
+            </div>
+            <TagsTable @ref="@_tagsTable"/>
         </MudCardContent>
     </MudCard>
 </div>
 
 @code{
     private TagsTable _tagsTable = new();
+    private MudButton _refreshButton = new();
+    private async Task RefreshData()
+    {
+        var startWatch = Stopwatch.StartNew();
+        _tagsTable.SetLoading(true);
+        _refreshButton.Disabled = true;
 
+        try
+        {
+            await TagsService.RefreshData();
+            startWatch.Stop();
+            var timeSpan = startWatch.Elapsed;
+            Snackbar.Add($"Odświeżono dane zakończone sukcesem. Proces zajął: {timeSpan:mm\\:ss\\.ff}s", Severity.Success);
+            await _tagsTable.RefreshData();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+        finally
+        {
+            if(startWatch.IsRunning)
+                startWatch.Stop();
+
+            _tagsTable.SetLoading(false);
+            _refreshButton.Disabled = false;
+        }
+    }
+
+    private void GoToManifest()
+    {
+        var baseAddress = HttpClientFactory.CreateClient(HttpClientSettings.SectionName).BaseAddress.ToString();
+
+        var manifestUri = baseAddress.Substring(0, baseAddress.Length - 4) + "openapi/v1.json";
+        NavigationManager.NavigateTo(manifestUri);
+    }
 }

@@ -4,7 +4,7 @@
 @using MudBlazor
 @inject ITagsService TagsService
 
-<MudTable @ref="@_mudTable" ServerData="ServerReload" Hover="true">
+<MudTable @ref="@_mudTable" ServerData="ServerReload" Hover="true" Class="shadow-none">
     <HeaderContent>
         <MudTh><MudTableSortLabel T="TagDto" SortLabel="@nameof(TagDto.Name)">
             <MudText>Nazwa</MudText>
@@ -46,7 +46,6 @@
     [Parameter] public string SortExpression { get; set; } = "Name:asc";
     [Parameter] public int PageSize { get; set; } = DefaultPaginationHelper.PageSize;
     [Parameter] public int Page { get; set; } = 1;
-
     private MudTable<TagDto> _mudTable = new();
 
     protected async override Task OnInitializedAsync()
@@ -81,6 +80,8 @@
     public void SetLoading(bool isLoading)
     {
         _mudTable.Loading = isLoading;
+        _mudTable.ReadOnly = isLoading;
+        StateHasChanged();
     }
 
     private async Task<TableData<TagDto>> ServerReload(TableState state, CancellationToken token)
@@ -100,6 +101,12 @@
         };
     }
 
-    private Color GetBooleanColor(bool value) => value ? Color.Primary : Color.Error;
-    private string GetBooleanIcon(bool value) => value ? Icons.Material.Filled.CheckBox : Icons.Material.Filled.CheckBoxOutlineBlank;
+    private static Color GetBooleanColor(bool value) => value ? Color.Primary : Color.Error;
+    private static string GetBooleanIcon(bool value) => value ? Icons.Material.Filled.CheckBox : Icons.Material.Filled.CheckBoxOutlineBlank;
+
+    public async Task RefreshData()
+    {
+        await _mudTable.ReloadServerData();
+    }
+
 }

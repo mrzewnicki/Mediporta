@@ -45,8 +45,11 @@ public class TagsController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> DownloadFromStackOverflow([FromBody] DownloadTagsFromStackOverflowDto dto, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> RefreshData([FromBody] DownloadTagsFromStackOverflowDto dto, CancellationToken cancellationToken = default)
     {
+        var removeDataCommand = new DeleteAllTags.Request();
+        var removeResult = await _mediator.Send(removeDataCommand, cancellationToken);
+
         var order = dto.OrderDirection.ToLower() == "asc"
             ? OrderDirection.Asc
             : OrderDirection.Desc;

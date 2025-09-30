@@ -29,6 +29,9 @@ public static class DownloadTagsFromStackOverflow
             var fetchedTags = await stackOverflowApiClient.GetTagsAsync(stackoverflowRequest);
 
             var sumOfAll = fetchedTags.Sum(t => t.Count.HasValue ? t.Count.Value : 0);
+
+            var s = fetchedTags.Where(x => x.HasSynonyms == true || x.IsModeratorOnly == true || x.IsRequired == true).ToList();
+
             var tagsToAdd = fetchedTags.Select(t => new Tag
             {
                 Name = t.Name,

@@ -41,9 +41,15 @@ public sealed class QueryOptions
         return options;
     }
 
-    private static IEnumerable<SortClause> StringToSortClause(string s) => s.Split(":")
-        .ToDictionary(p => p[0].ToString(), p => StringToSortDirection(p[1].ToString()))
-        .Select(pair => new SortClause(pair.Key, pair.Value));
+    private static SortClause StringToSortClause(string s)
+    {
+        var splittedArguments = s.Split(":");
+        var fieldString = splittedArguments[0];
+        var directionString = splittedArguments[1];
+
+
+        return new SortClause(fieldString, StringToSortDirection(directionString));
+    }
 
     private static SortDirection StringToSortDirection(string s) => s switch
     {

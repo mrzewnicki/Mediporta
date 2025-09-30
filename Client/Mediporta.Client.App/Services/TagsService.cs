@@ -9,6 +9,7 @@ namespace Mediporta.Client.App.Services;
 public interface ITagsService
 {
     Task<GetTagResultDto> GetTags(string sortExpression, int page, int pageSize);
+    Task RefreshData();
 }
 
 public class TagsService : ITagsService
@@ -32,6 +33,34 @@ public class TagsService : ITagsService
                 throw new Exception("Fetch data failed");
 
             return response;
+        }
+        catch (Exception e)
+        {
+            _snackbar.Add("Wystąpił błąd podczas pobierania danych", Severity.Error);
+
+            if (EnvironmentHelper.IsDebug)
+                Console.WriteLine(e);
+
+            throw;
+        }
+    }
+
+    public async Task RefreshData()
+    {
+        try
+        {
+            var request = new DownloadTagsFromStackOverflowDto
+            {
+                ItemsCount = 2000,
+                OrderDirection = "desc",
+                Sort = "popular",
+                Site = "stackoverflow"
+            };
+
+            var response = await _httpClient.PostAsJsonAsync($"Tags/RefreshData", request);
+
+            if (response is null)
+                throw new Exception("Fetch data failed");
         }
         catch (Exception e)
         {

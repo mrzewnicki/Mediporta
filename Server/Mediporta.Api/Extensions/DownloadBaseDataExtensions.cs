@@ -29,7 +29,7 @@ public static class DownloadBaseDataExtensions
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
         var request = new DownloadTagsFromStackOverflow.Request(
-            ItemsCount: 1000,
+            ItemsCount: 2000,
             OrderDirection: OrderDirection.Desc,
             Sort: "popular",
             Site: "stackoverflow");
