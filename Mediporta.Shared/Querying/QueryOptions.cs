@@ -1,4 +1,5 @@
 using Mediporta.Api.Models;
+using Mediporta.Shared.Helpers;
 
 namespace Mediporta.Shared.Querying;
 
@@ -14,26 +15,40 @@ public sealed class QueryOptions
     /// </summary>
     public List<SortClause> Sorts { get; set; } = new();
 
-    public void EnsureDefaults(
-        int defaultPage = 1,
-        int defaultPageSize = 50,
-        string? defaultSortBy = null,
-        SortDirection defaultDirection = SortDirection.Asc,
-        IEnumerable<SortClause>? defaultSorts = null)
+    public static QueryOptions Build(string sortExpression, int page, int pageSize)
     {
-        if (Page < 1)
-            Page = defaultPage;
+        if(page < 1)
+            page = 1;
 
-        if (PageSize < 1)
-            PageSize = defaultPageSize;
+        if(pageSize < 1)
+            pageSize = DefaultPaginationHelper.PageSize;
 
-        // If multi-sorts not provided, fall back to legacy single SortBy/Direction
-        if (Sorts.Count == 0)
+        var options = new QueryOptions()
         {
-            if (defaultSorts != null)
-                Sorts.AddRange(defaultSorts);
-            else if (!string.IsNullOrWhiteSpace(defaultSortBy))
-                Sorts.Add(new SortClause(defaultSortBy!, defaultDirection));
+            Page = page,
+            PageSize = pageSize
+        };
+
+        if (!string.IsNullOrEmpty(sortExpression))
+        {
+            if (sortExpression.Contains(','))
+                foreach (var item in sortExpression.Split(','))
+                    options.Sorts.AddRange(StringToSortClause(item));
+            else
+                options.Sorts.AddRange(StringToSortClause(sortExpression));
         }
+
+        return options;
     }
+
+    private static IEnumerable<SortClause> StringToSortClause(string s) => s.Split(":")
+        .ToDictionary(p => p[0].ToString(), p => StringToSortDirection(p[1].ToString()))
+        .Select(pair => new SortClause(pair.Key, pair.Value));
+
+    private static SortDirection StringToSortDirection(string s) => s switch
+    {
+        "asc" => SortDirection.Asc,
+        "desc" => SortDirection.Desc,
+        _ => SortDirection.Asc
+    };
 }

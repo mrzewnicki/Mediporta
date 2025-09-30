@@ -1,0 +1,39 @@
+﻿@using Mediporta.Client.App.Config
+@using MudBlazor
+@using MudBlazor.Utilities
+@inherits LayoutComponentBase
+
+<PageTitle>Mediporta Page</PageTitle>
+<MudThemeProvider Theme="@CurrentTheme" />
+<CascadingValue Value="@CurrentTheme" Name="AppTheme">
+    <div class="page">
+        <NavMenu />
+        <div class="page__body">
+            <MudDrawerContainer Class="mud-height-full">
+                <MudMainContent Style="@MudMainContentStyles.Build()">
+                    <div class="d-flex justify-center align-center mud-height-full">
+                        @Body
+                    </div>
+                </MudMainContent>
+            </MudDrawerContainer>
+
+            <MudDialogProvider
+                MaxWidth="MaxWidth.Medium"
+                Position="DialogPosition.Center"
+                CloseButton="true"
+                CloseOnEscapeKey="true"/>
+            <MudSnackbarProvider/>
+            <MudPopoverProvider/>
+        </div>
+    </div>
+</CascadingValue>
+@code{
+
+    MudTheme CurrentTheme { get; set; } = ThemeBuilder.Build();
+
+    StyleBuilder MudMainContentStyles => new StyleBuilder()
+        .AddStyle("width", "100%")
+        .AddStyle("height", "100%")
+        .AddStyle("padding", "0")
+        .AddStyle("background-color", CurrentTheme.PaletteLight.Background.Value);
+}

@@ -1,0 +1,105 @@
+﻿@using Mediporta.Client.App.Services
+@using Mediporta.Shared.DTOs
+@using Mediporta.Shared.Helpers
+@using MudBlazor
+@inject ITagsService TagsService
+
+<MudTable @ref="@_mudTable" ServerData="ServerReload" Hover="true">
+    <HeaderContent>
+        <MudTh><MudTableSortLabel T="TagDto" SortLabel="@nameof(TagDto.Name)">
+            <MudText>Nazwa</MudText>
+        </MudTableSortLabel></MudTh>
+        <MudTh><MudText>Liczba wystąpień</MudText></MudTh>
+        <MudTh><MudText>Czy ma synonimy?</MudText></MudTh>
+        <MudTh><MudText>Tylko dla Moderatora</MudText></MudTh>
+        <MudTh><MudText>Czy jest wymagany?</MudText></MudTh>
+        <MudTh><MudTableSortLabel T="TagDto" SortLabel="@nameof(TagDto.PercentageOfAll)">
+            <MudText>% z całości</MudText>
+        </MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>@context.Name</MudTd>
+        <MudTd>@context.Count</MudTd>
+        <MudTd>
+            <MudIcon Size="Size.Medium" Icon="@GetBooleanIcon(context.HasSynonyms)" Color="@GetBooleanColor(context.HasSynonyms)" />
+        </MudTd>
+        <MudTd>
+            <MudIcon Size="Size.Medium" Icon="@GetBooleanIcon(context.IsModeratorOnly)" Color="@GetBooleanColor(context.IsModeratorOnly)" />
+        </MudTd>
+        <MudTd>
+            <MudIcon Size="Size.Medium" Icon="@GetBooleanIcon(context.IsRequired)" Color="@GetBooleanColor(context.IsRequired)" />
+        </MudTd>
+        <MudTd>@(context.PercentageOfAll.ToString("F2")+"%")</MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>Brak tagów</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>Pobieranie...</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[] { 10, 25, 50, 100 }" />
+    </PagerContent>
+</MudTable>
+
+@code {
+    [Parameter] public string SortExpression { get; set; } = "Name:asc";
+    [Parameter] public int PageSize { get; set; } = DefaultPaginationHelper.PageSize;
+    [Parameter] public int Page { get; set; } = 1;
+
+    private MudTable<TagDto> _mudTable = new();
+
+    protected async override Task OnInitializedAsync()
+    {
+        try
+        {
+            SetLoading(true);
+            await Task.Delay(1000); // Simulate loading delay
+            await GetData();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        finally
+        {
+            SetLoading(false);
+        }
+    }
+
+    private async Task<GetTagResultDto> GetData()
+    {
+        if(Page < 1)
+            Page = 1;
+
+        if (PageSize < 1)
+            PageSize = DefaultPaginationHelper.PageSize;
+
+        return await TagsService.GetTags(SortExpression, Page, PageSize);
+    }
+
+    public void SetLoading(bool isLoading)
+    {
+        _mudTable.Loading = isLoading;
+    }
+
+    private async Task<TableData<TagDto>> ServerReload(TableState state, CancellationToken token)
+    {
+        if (string.IsNullOrEmpty(state.SortLabel))
+            state.SortLabel = nameof(TagDto.Name);
+
+        SortExpression = $"{state.SortLabel}:{(state.SortDirection == SortDirection.Descending ? "desc" : "asc")}";
+        Page = state.Page;
+        PageSize = state.PageSize;
+
+        var data = await GetData();
+        return new TableData<TagDto>()
+        {
+            TotalItems = data.TotalCount,
+            Items = data.Tags
+        };
+    }
+
+    private Color GetBooleanColor(bool value) => value ? Color.Primary : Color.Error;
+    private string GetBooleanIcon(bool value) => value ? Icons.Material.Filled.CheckBox : Icons.Material.Filled.CheckBoxOutlineBlank;
+}

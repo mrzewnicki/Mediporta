@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Mediporta.Data.Entities;
+﻿using Mediporta.Data.Entities;
 using Mediporta.Data.Repositories.Helpers;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,10 +6,12 @@ namespace Mediporta.Data.Repositories;
 
 public interface ITagsRepository
 {
-    IEnumerable<Tag> GetAll(IEnumerable<OrderByQuery> orderByQueries = null, int skip = 0, int take = 100);
+    IEnumerable<Tag> GetAll(IReadOnlyList<OrderByQuery> orderByQueries = null, int skip = 0, int take = 100);
     Task<Tag?> GetByIdAsync(int id, CancellationToken cancellationToken);
     Task AddRangeAsync(IEnumerable<Tag> tags);
     bool Remove(Tag tag);
+    bool HasAnyData();
+    Task<int> CountAllAsync(CancellationToken cancellationToken);
 }
 
 public class TagsRepository:ITagsRepository
@@ -22,8 +23,11 @@ public class TagsRepository:ITagsRepository
         _context = context;
     }
 
-    public IEnumerable<Tag> GetAll(IEnumerable<OrderByQuery> orderByQueries = null, int skip = 0, int take = 100)
+    public IEnumerable<Tag> GetAll(IReadOnlyList<OrderByQuery> orderByQueries = null, int skip = 0, int take = 100)
     {
+        if (!HasAnyData())
+            return [];
+
         if(orderByQueries is null || !orderByQueries.Any())
             orderByQueries = new List<OrderByQuery> { new(t => t.Name) };
 
@@ -79,5 +83,15 @@ public class TagsRepository:ITagsRepository
     {
         _context.Remove(tag);
         return _context.SaveChanges() > 0;
+    }
+
+    public bool HasAnyData()
+    {
+        return _context.Tags.Any();
+    }
+
+    public async Task<int> CountAllAsync(CancellationToken cancellationToken)
+    {
+        return await _context.Tags.CountAsync(cancellationToken);
     }
 }

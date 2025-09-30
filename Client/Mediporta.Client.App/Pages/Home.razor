@@ -1,0 +1,20 @@
+﻿@using Mediporta.Client.App.Components
+@using Mediporta.Client.App.Services
+@using MudBlazor
+@inject ITagsService TagsService
+@page "/"
+
+<PageTitle>Strona Główna</PageTitle>
+
+<div style="width: 80%" class="fade-in">
+    <MudCard class="mt-5">
+        <MudCardContent>
+            <TagsTable @ref="@_tagsTable" />
+        </MudCardContent>
+    </MudCard>
+</div>
+
+@code{
+    private TagsTable _tagsTable = new();
+
+}

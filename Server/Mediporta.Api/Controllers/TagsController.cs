@@ -1,23 +1,23 @@
 using MediatR;
 using Mediporta.Core.CQRS.Queries;
+using Mediporta.Core.CQRS.Command;
 using Mediporta.Shared.DTOs;
+using Mediporta.Shared.Helpers;
 using Mediporta.Shared.Querying;
+using Mediporta.StackOverflow.ApiClient.Models.Helpers;
 using Microsoft.AspNetCore.Mvc;
-using Mediporta.Api.Middleware;
 
 namespace Mediporta.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/[controller]/[action]")]
 public class TagsController : ControllerBase
 {
     private readonly IMediator _mediator;
-    private readonly IQueryOptionsAccessor _queryOptionsAccessor;
 
-    public TagsController(IMediator mediator, IQueryOptionsAccessor queryOptionsAccessor)
+    public TagsController(IMediator mediator)
     {
         _mediator = mediator;
-        _queryOptionsAccessor = queryOptionsAccessor;
     }
 
     /// <summary>
@@ -26,10 +26,39 @@ public class TagsController : ControllerBase
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<TagDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetAll(CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetAll(string sort = "Name:asc", int page = 1, int pageSize = DefaultPaginationHelper.PageSize, CancellationToken cancellationToken = default)
     {
-        var request = new GetTagsQuery.Request(_queryOptionsAccessor.Options);
+        var queryOptions = QueryOptions.Build(sort, page, pageSize);
+
+        if(queryOptions is null)
+            return BadRequest("Invalid query parametrs");
+
+        var request = new GetTagsQuery.Request(queryOptions);
         var response = await _mediator.Send(request, cancellationToken);
-        return Ok(response);
+
+        return Ok(new GetTagResultDto(response.Items, response.TotalCount));
+    }
+
+    /// <summary>
+    /// Downloads tags from StackOverflow and stores them in the database.
+    /// </summary>
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> DownloadFromStackOverflow([FromBody] DownloadTagsFromStackOverflowDto dto, CancellationToken cancellationToken = default)
+    {
+        var order = dto.OrderDirection.ToLower() == "asc"
+            ? OrderDirection.Asc
+            : OrderDirection.Desc;
+
+        var request = new DownloadTagsFromStackOverflow.Request(
+            dto.ItemsCount,
+            order,
+            dto.Sort,
+            dto.Site
+        );
+
+        await _mediator.Send(request, cancellationToken);
+        return NoContent();
     }
 }

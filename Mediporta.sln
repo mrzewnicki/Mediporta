@@ -4,8 +4,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{F3A3C9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediporta.StackOverflow.ApiClient", "Server\Mediporta.StackOverflow.ApiClient\Mediporta.StackOverflow.ApiClient.csproj", "{CE48478F-D4F1-4523-89A0-0F7D3B9BAF85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediporta.ConsoleTest", "Server\Mediporta.ConsoleTest\Mediporta.ConsoleTest.csproj", "{9B3DB935-EC34-4E8D-A14D-BA040EA2A799}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediporta.Data", "Server\Mediporta.Data\Mediporta.Data.csproj", "{5DB2140C-A4C7-4BC6-813A-5195E6CE3DEE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediporta.Api", "Server\Mediporta.Api\Mediporta.Api.csproj", "{886DAC9E-A9FD-4612-8A96-BB1A17DFC1E1}"
@@ -21,6 +19,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{3924BB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediporta.Shared", "Mediporta.Shared\Mediporta.Shared.csproj", "{7B8DAC30-3B1A-436C-8291-78AD204EAC53}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{B8BFC309-CC43-4601-8E50-32C538BB89DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediporta.Client.App", "Client\Mediporta.Client.App\Mediporta.Client.App.csproj", "{DBAC6F9C-D0A5-47EF-B36D-5F84D2A0282E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,21 +30,17 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CE48478F-D4F1-4523-89A0-0F7D3B9BAF85} = {F3A3C9DA-6C9E-41C0-87AB-70CBDFA4793B}
-		{9B3DB935-EC34-4E8D-A14D-BA040EA2A799} = {F3A3C9DA-6C9E-41C0-87AB-70CBDFA4793B}
 		{5DB2140C-A4C7-4BC6-813A-5195E6CE3DEE} = {F3A3C9DA-6C9E-41C0-87AB-70CBDFA4793B}
 		{886DAC9E-A9FD-4612-8A96-BB1A17DFC1E1} = {F3A3C9DA-6C9E-41C0-87AB-70CBDFA4793B}
 		{13DE6E2A-6739-4383-A051-12A415358B51} = {F3A3C9DA-6C9E-41C0-87AB-70CBDFA4793B}
 		{7B8DAC30-3B1A-436C-8291-78AD204EAC53} = {3924BBB9-D6B6-4C99-B5D1-68306A9383B9}
+		{DBAC6F9C-D0A5-47EF-B36D-5F84D2A0282E} = {B8BFC309-CC43-4601-8E50-32C538BB89DE}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{CE48478F-D4F1-4523-89A0-0F7D3B9BAF85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CE48478F-D4F1-4523-89A0-0F7D3B9BAF85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE48478F-D4F1-4523-89A0-0F7D3B9BAF85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE48478F-D4F1-4523-89A0-0F7D3B9BAF85}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9B3DB935-EC34-4E8D-A14D-BA040EA2A799}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9B3DB935-EC34-4E8D-A14D-BA040EA2A799}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9B3DB935-EC34-4E8D-A14D-BA040EA2A799}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9B3DB935-EC34-4E8D-A14D-BA040EA2A799}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5DB2140C-A4C7-4BC6-813A-5195E6CE3DEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5DB2140C-A4C7-4BC6-813A-5195E6CE3DEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DB2140C-A4C7-4BC6-813A-5195E6CE3DEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -59,5 +57,9 @@ Global
 		{7B8DAC30-3B1A-436C-8291-78AD204EAC53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B8DAC30-3B1A-436C-8291-78AD204EAC53}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B8DAC30-3B1A-436C-8291-78AD204EAC53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBAC6F9C-D0A5-47EF-B36D-5F84D2A0282E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBAC6F9C-D0A5-47EF-B36D-5F84D2A0282E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBAC6F9C-D0A5-47EF-B36D-5F84D2A0282E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBAC6F9C-D0A5-47EF-B36D-5F84D2A0282E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

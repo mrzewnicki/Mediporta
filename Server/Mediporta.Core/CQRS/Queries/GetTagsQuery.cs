@@ -12,13 +12,11 @@ public static class GetTagsQuery
 {
     public sealed record Request(QueryOptions Options) : IRequest<Response>;
 
-    public sealed record Response(IEnumerable<TagDto> Items);
+    public sealed record Response(IEnumerable<TagDto> Items, int TotalCount);
 
 
     public sealed class Handler(ITagsRepository repository) : IRequestHandler<Request, Response>
     {
-        private readonly ITagsRepository _repository = repository;
-
         public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
         {
             var orderByQueries = request.Options.Sorts.Select(CreateOrderByQuery);
@@ -26,12 +24,14 @@ public static class GetTagsQuery
                     : request.Options.Page * request.Options.PageSize;
             var take = request.Options.PageSize;
 
-            var tags = _repository.GetAll(orderByQueries, skip, take);
+            var tags = repository.GetAll(orderByQueries.ToList(), skip, take);
             var items = tags
                 .Select(t => new TagDto(t.Id, t.Name, t.Count, t.HasSynonyms, t.IsModeratorOnly, t.IsRequired, t.PercentageOfAll))
                 .AsEnumerable();
 
-            return new Response(items);
+            var countAll = await repository.CountAllAsync(cancellationToken);
+
+            return new Response(items, countAll);
         }
 
         private static OrderByQuery CreateOrderByQuery(SortClause clause)

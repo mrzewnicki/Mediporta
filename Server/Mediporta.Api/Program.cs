@@ -1,4 +1,4 @@
-using MediatR;
+using Mediporta.Api.Extensions;
 using Mediporta.Core.CQRS.Queries;
 using Mediporta.Data;
 using Mediporta.Data.Repositories;
@@ -16,23 +16,25 @@ builder.WebHost.ConfigureKestrel(options =>
     configuration.GetSection("Kestrel").Bind(options);
 });
 
-// Add services to the container.
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DefaultPolicy",
+        policy => policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-
-// QueryOptions accessor (populated by middleware)
-builder.Services.AddScoped<Mediporta.Api.Middleware.IQueryOptionsAccessor, Mediporta.Api.Middleware.QueryOptionsAccessor>();
 
 // Connection string from appsettings.json
 var connString = configuration.GetConnectionString("Default") ?? "Data Source=Mediporta.db";
 builder.Services.AddDbContext<MediportaDbContext>(options => options.UseSqlite(connString));
 
-// Repositories
 builder.Services.AddScoped<ITagsRepository, TagsRepository>();
 
-// Options binding for StackOverflow API client configuration
 builder.Services
     .AddOptions<StackOverflowApiClientConfiguration>()
     .Bind(configuration.GetSection("StackOverflowApi"))
@@ -54,6 +56,9 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Ge
 
 var app = builder.Build();
 
+app.Services.PrepareDatabase();
+await app.Services.DownloadBaseDataAsync();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -62,11 +67,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// Populate query options from query string
-app.UseMiddleware<Mediporta.Api.Middleware.QueryOptionsMiddleware>();
-
 app.UseAuthorization();
-
+app.UseCors("DefaultPolicy");
 app.MapControllers();
 
 app.Run();
