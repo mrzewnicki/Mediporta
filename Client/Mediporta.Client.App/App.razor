@@ -8,7 +8,7 @@
     <NotFound>
         <PageTitle>Not found</PageTitle>
         <LayoutView Layout="@typeof(MainLayout)">
-            <MudButton class="mt-2" OnClick="@(_ => NavigationManager.NavigateTo("./"))">Idź do strony głównej</MudButton>
+            <MudButton StartIcon="@Icons.Material.Filled.Rocket" Variant="Variant.Filled" Color="Color.Success" class="mt-2" OnClick="@(_ => NavigationManager.NavigateTo("./"))">Idź do strony głównej</MudButton>
         </LayoutView>
     </NotFound>
 </Router>

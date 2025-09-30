@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Mediporta.Api.Models;
 using Mediporta.Data.Entities;
 using Mediporta.Data.Repositories;
 using Mediporta.Data.Repositories.Helpers;

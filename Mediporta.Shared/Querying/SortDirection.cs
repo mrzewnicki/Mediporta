@@ -1,4 +1,4 @@
-﻿namespace Mediporta.Api.Models;
+﻿namespace Mediporta.Shared.Querying;
 
 public enum SortDirection
 {

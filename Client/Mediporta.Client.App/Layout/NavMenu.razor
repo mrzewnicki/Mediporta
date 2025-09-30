@@ -1,13 +1,10 @@
 ﻿@using MudBlazor
 
-@inject NavigationManager NavigationManager
-
 <MudAppBar Color="Color.Primary" Fixed="false" Style="padding-top: 8px">
     <MudSpacer/>
-    <MudButton class="mx-2" OnClick="@(_ => NavigationManager.NavigateTo("./"))">Strona Główna</MudButton>
+    <MudText Tag="@Typo.h3">
+        <MudIcon Icon="@Icons.Material.Filled.Tag" />
+        Tagi Stack Overflow
+    </MudText>
     <MudSpacer/>
 </MudAppBar>
-
-@code{
-
-}

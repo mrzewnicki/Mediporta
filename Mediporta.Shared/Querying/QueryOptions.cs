@@ -1,4 +1,3 @@
-using Mediporta.Api.Models;
 using Mediporta.Shared.Helpers;
 
 namespace Mediporta.Shared.Querying;
