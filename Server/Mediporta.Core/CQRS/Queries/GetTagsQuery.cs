@@ -20,8 +20,8 @@ public static class GetTagsQuery
         public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
         {
             var orderByQueries = request.Options.Sorts.Select(CreateOrderByQuery);
-            var skip = request.Options.Page == 1 ? 0
-                    : request.Options.Page * request.Options.PageSize;
+            var skip = request.Options.Page <= 1 ? 0
+                    : (request.Options.Page - 1) * request.Options.PageSize;
             var take = request.Options.PageSize;
 
             var tags = repository.GetAll(orderByQueries.ToList(), skip, take);
