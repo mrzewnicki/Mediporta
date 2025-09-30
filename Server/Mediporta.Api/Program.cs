@@ -59,12 +59,8 @@ var app = builder.Build();
 app.Services.PrepareDatabase();
 await app.Services.DownloadBaseDataAsync();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
 
+app.MapOpenApi();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

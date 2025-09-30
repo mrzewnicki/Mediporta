@@ -1,0 +1,20 @@
+﻿services:
+  mediporta.api:
+    build:
+      context: .
+      dockerfile: Server/Mediporta.Api/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - Kestrel__Endpoints__Http__Url=http://0.0.0.0:8080
+    ports:
+      - "5080:8080"
+    restart: unless-stopped
+
+  mediporta.client:
+    build:
+      context: .
+      dockerfile: Client/Mediporta.Client.App/Dockerfile
+    ports:
+      - "8085:80"
+    depends_on:
+      - mediporta.api
